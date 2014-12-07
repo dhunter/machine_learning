@@ -36,8 +36,7 @@ def sim_distance(preferences,person_1,person_2):
 
 	#	Add the squares of all the differences.
 	sum_of_squares=sum([pow(preferences[person_1][item]-
-		preferences[person_2][item])],2)
-		for item in preferences[person_1]
-			if item in preferences[person_2]
+		preferences[person_2][item],2)
+		for item in preferences[person_1] if item in preferences[person_2]])
 
 	return 1/(1+sum_of_squares)
