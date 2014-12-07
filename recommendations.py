@@ -25,7 +25,7 @@ critics={'Lisa Rose':{'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
 from math import sqrt
 
 
-# 	Calculate distance-based similarity score between two people.
+# 	Calculate Euclidean distance-based similarity score between two people.
 def sim_distance(preferences,person_1,person_2):
 	#	Get the list of shared items
 	shared_items={}
@@ -44,6 +44,10 @@ def sim_distance(preferences,person_1,person_2):
 		for item in preferences[person_1] if item in preferences[person_2]])
 
 
+	#	Since we want all similarity scores to return greater values for
+	#	greater similarity, need to invert sum_of_squares, which inherently
+	#	gives smaller number numbers for greater similarity.  1 is added to the
+	#	denominator to eliminate division by zero errors.
 	return 1/(1+sum_of_squares)
 
 
@@ -83,3 +87,11 @@ def sim_pearson(preferences,person_1,person_2):
 		return 0
 	pearson_score=pearson_numerator/pearson_denominator
 	return pearson_score
+
+
+#	Returns the best matches for person from the preferences dictionary.
+def top_matches(preferences,person,n=5,similarity=sim_pearson):
+	scores=[(similarity(preferences,person,person_to_compare_against),
+		person_to_compare_against)
+	for person_to_compare_against in preferences
+		if person_to_compare_against!=person_to_compare_against]
